@@ -49,8 +49,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--repo-root", default=".")
     p.add_argument("--lcb-dir", default="results/if_router_gated_selection_lcb_v1_5seed")
     p.add_argument("--cache-dir", default="results/fast_screen_xgb_k10_auc_ecfp_router_5seed")
-    p.add_argument("--k1-dir", default="results/fast_screen_scaffold_balanced")
-    p.add_argument("--k10-dir", default="results/fast_screen_xgb_k10_auc_ecfp_router_5seed")
+    p.add_argument("--k1-cls-dir", default="results/conformer_k1_controlled_cls_5seed")
+    p.add_argument("--k1-reg-dir", default="results/conformer_k1_controlled_reg_5seed")
+    p.add_argument("--k10-cls-dir", default="results/if_oof_usr_rdkit2d_combo_cls_5seed")
+    p.add_argument("--k10-reg-dir", default="results/if_oof_scalar_rdkit2d_combo_reg_5seed")
     p.add_argument("--baseline-dir", default="results/baseline_matrix_scaffold_balanced_5seed")
     p.add_argument("--out-dir", default="results/jcim_full_audit")
     p.add_argument("--main-budget", type=float, default=20.0)
@@ -648,30 +650,47 @@ def build_cost_summary(cache_dir: Path, risk_long: pd.DataFrame, main_budget: fl
     return pd.DataFrame(rows).sort_values("task")
 
 
-def build_k1_k10(cache_root: Path, k1_dir: Path, k10_dir: Path) -> pd.DataFrame:
-    k1 = read_csv(k1_dir / "analysis_tables" / "budget20_comparison.csv")
-    k10 = read_csv(k10_dir / "analysis_tables" / "budget20_comparison.csv")
+def build_k1_k10(k1_dirs: list[Path], k10_dirs: list[Path]) -> pd.DataFrame:
+    k1_frames = [read_csv(path / "metrics_long.csv") for path in k1_dirs]
+    k10_frames = [read_csv(path / "metrics_long.csv") for path in k10_dirs]
+    k1 = pd.concat([frame for frame in k1_frames if not frame.empty], ignore_index=True)
+    k10 = pd.concat([frame for frame in k10_frames if not frame.empty], ignore_index=True)
     if k1.empty or k10.empty:
         return pd.DataFrame()
-    a = k1[["task", "method", "primary_metric", "primary_mean", "delta_vs_all_2d_positive_better", "call_rate_mean"]].rename(
-        columns={
-            "primary_mean": "k1_primary_mean",
-            "delta_vs_all_2d_positive_better": "k1_delta_vs_2d",
-            "call_rate_mean": "k1_call_rate",
-        }
-    )
-    b = k10[["task", "method", "primary_metric", "primary_mean", "delta_vs_all_2d_positive_better", "call_rate_mean"]].rename(
-        columns={
-            "primary_mean": "k10_primary_mean",
-            "delta_vs_all_2d_positive_better": "k10_delta_vs_2d",
-            "call_rate_mean": "k10_call_rate",
-        }
-    )
-    out = a.merge(b, on=["task", "method", "primary_metric"], how="inner")
-    out["k10_minus_k1_signed"] = [
-        signed_delta(metric, k1v, k10v) for metric, k1v, k10v in zip(out["primary_metric"], out["k1_primary_mean"], out["k10_primary_mean"])
-    ]
-    return out.sort_values(["task", "method"])
+
+    rows = []
+    for task in sorted(set(k1["task"]).intersection(k10["task"])):
+        metric = "AUROC" if TASK_TYPE[task] == "classification" else "MAE"
+        a = k1[k1["task"] == task]
+        b = k10[k10["task"] == task]
+        ref1 = a[a["method"] == "all_2d"][["seed", metric]].rename(columns={metric: "k1_2d"})
+        ref10 = b[b["method"] == "all_2d"][["seed", metric]].rename(columns={metric: "k10_2d"})
+        aug1 = a[a["method"] == "all_3d_aug"][["seed", metric]].rename(columns={metric: "k1_aug"})
+        aug10 = b[b["method"] == "all_3d_aug"][["seed", metric]].rename(columns={metric: "k10_aug"})
+        paired = ref1.merge(ref10, on="seed", validate="one_to_one").merge(aug1, on="seed", validate="one_to_one").merge(aug10, on="seed", validate="one_to_one")
+        if paired.empty:
+            continue
+        max_ref_diff = float(np.max(np.abs(paired["k1_2d"] - paired["k10_2d"])))
+        ref = paired["k1_2d"].astype(float)
+        k1_aug = paired["k1_aug"].astype(float)
+        k10_aug = paired["k10_aug"].astype(float)
+        rows.append(
+            {
+                "task": task,
+                "metric": metric,
+                "n_seeds": int(paired["seed"].nunique()),
+                "reference_mean": float(ref.mean()),
+                "reference_sd": float(ref.std(ddof=0)),
+                "k1_augmented_mean": float(k1_aug.mean()),
+                "k1_augmented_sd": float(k1_aug.std(ddof=0)),
+                "k10_augmented_mean": float(k10_aug.mean()),
+                "k10_augmented_sd": float(k10_aug.std(ddof=0)),
+                "k10_minus_k1_directional": signed_delta(metric, float(k1_aug.mean()), float(k10_aug.mean())),
+                "k10_minus_reference_directional": signed_delta(metric, float(ref.mean()), float(k10_aug.mean())),
+                "max_abs_paired_2d_difference": max_ref_diff,
+            }
+        )
+    return pd.DataFrame(rows).sort_values("task")
 
 
 def collect_backbones(repo: Path) -> pd.DataFrame:
@@ -933,7 +952,10 @@ def main() -> None:
     cost = build_cost_summary(cache_dir, risk_long, args.main_budget)
     cost.to_csv(out_dir / "real_conformer_cost_summary.csv", index=False)
 
-    k1k10 = build_k1_k10(repo, repo / args.k1_dir, repo / args.k10_dir)
+    k1k10 = build_k1_k10(
+        [repo / args.k1_cls_dir, repo / args.k1_reg_dir],
+        [repo / args.k10_cls_dir, repo / args.k10_reg_dir],
+    )
     k1k10.to_csv(out_dir / "k1_vs_k10_conformer_sensitivity.csv", index=False)
 
     backbones = collect_backbones(repo)

@@ -69,11 +69,11 @@ runtime depends strongly on CPU parallelism and XGBoost acceleration. Resource
 limits are controlled with `CONFORMER_JOBS`, `MODEL_THREADS`, and
 `ROUTER_JOBS`.
 
-The operational R9 policy and the fold-separated nested audit are distinct:
+The operational R9 policy and the fold-separated calibration analysis are distinct:
 
 - `run_router_gated_selection.py` evaluates the operational Utility-LCB policy.
-- `run_router_nested_calibration.py` evaluates the independence-preserving
-  calibration audit.
+- `run_router_nested_calibration.py` evaluates permission using a calibration
+  fold excluded from router and gate selection.
 
 Detailed stage-to-output mapping is provided in `REPRODUCIBILITY.md`.
 

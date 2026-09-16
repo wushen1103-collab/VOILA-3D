@@ -156,6 +156,41 @@ run_robustness() {
   run_core
   run_usr_cache
 
+  run_if_missing results/conformer_k1_controlled_cls_5seed/run_metadata.json \
+    "$PYTHON" experiments/fast_screen.py \
+    --tasks BACE BBBP HIV \
+    --split scaffold_balanced \
+    --seeds "${SEEDS[@]}" \
+    --budgets "${BUDGETS[@]}" \
+    --max-mols 12000 \
+    --conformers 1 \
+    --feature2d-set rdkit2d_combo \
+    --feature3d-set usr \
+    --conformer-jobs "$CONFORMER_JOBS" \
+    --parallel-tasks 1 \
+    --model-threads "$MODEL_THREADS" \
+    --xgb-device "$XGB_DEVICE" \
+    --router-feature-set ecfp_desc \
+    --classification-benefit auc_contrib \
+    --out-dir results/conformer_k1_controlled_cls_5seed
+
+  run_if_missing results/conformer_k1_controlled_reg_5seed/run_metadata.json \
+    "$PYTHON" experiments/fast_screen.py \
+    --tasks ESOL FreeSolv Lipophilicity \
+    --split scaffold_balanced \
+    --seeds "${SEEDS[@]}" \
+    --budgets "${BUDGETS[@]}" \
+    --max-mols 12000 \
+    --conformers 1 \
+    --feature2d-set rdkit2d_combo \
+    --feature3d-set rdkit_scalar \
+    --conformer-jobs "$CONFORMER_JOBS" \
+    --parallel-tasks 1 \
+    --model-threads "$MODEL_THREADS" \
+    --xgb-device "$XGB_DEVICE" \
+    --router-feature-set ecfp_desc \
+    --out-dir results/conformer_k1_controlled_reg_5seed
+
   run_if_missing results/if_fusion_baselines_usr_5seed/run_metadata.json \
     "$PYTHON" experiments/run_if_fusion_baselines.py \
     --tasks "${PRIMARY_TASKS[@]}" \
