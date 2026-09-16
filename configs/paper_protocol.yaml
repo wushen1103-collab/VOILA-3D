@@ -1,0 +1,44 @@
+protocol:
+  split: scaffold_balanced
+  split_seed: 0
+  fractions:
+    train: 0.8
+    validation: 0.1
+    test: 0.1
+  seeds: [0, 1, 2, 3, 4]
+  budgets_percent: [0, 5, 10, 20, 40, 60, 80, 100]
+  main_budget_percent: 20
+  max_molecules: 12000
+
+benchmarks:
+  regression: [ESOL, FreeSolv, Lipophilicity]
+  classification: [BACE, BBBP, HIV]
+  conformation_stress: [QM9_MU, QM9_R2]
+
+features:
+  two_dimensional: rdkit2d_combo
+  classification_three_dimensional: usr
+  regression_three_dimensional: rdkit_scalar
+  conformers: 10
+  router: ecfp_desc
+
+router:
+  oof_folds: 5
+  operational_policy:
+    estimators: 64
+    pair_samples: 5000
+    pair_margin_fraction: 0.25
+    bootstrap_iterations: 1000
+    permission_bootstrap_iterations: 500
+    minimum_selected: 8
+    utility_lcb_threshold: 0.0
+  nested_audit:
+    estimators: 48
+    pair_samples: 3000
+    bootstrap_iterations: 800
+    permission_bootstrap_iterations: 400
+
+qm9_stress:
+  split: random
+  max_molecules: 2000
+  three_dimensional_features: rdkit_full

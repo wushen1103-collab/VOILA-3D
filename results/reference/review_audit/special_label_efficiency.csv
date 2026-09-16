@@ -1,0 +1,73 @@
+scenario,task,task_type,train_fraction,router,budget,interpretation,primary_metric,primary_mean,primary_std,call_rate_mean,n_seeds,n_fit_mean
+low_label_cold_start,BACE,classification,0.1,voi_router,0.0,2D only under limited labels,AUROC,0.7679858708189158,0.0520845331175691,0.0,5,104.0
+low_label_cold_start,BACE,classification,0.1,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.7641003460207612,0.0502526651221693,20.16806722689076,5,104.0
+low_label_cold_start,BACE,classification,0.1,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.7033737024221454,0.0558029703765155,100.0,5,104.0
+low_label_cold_start,BACE,classification,0.25,voi_router,0.0,2D only under limited labels,AUROC,0.8102508650519031,0.0215452947620322,0.0,5,260.0
+low_label_cold_start,BACE,classification,0.25,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.8030493079584774,0.0231229118040684,20.16806722689076,5,260.0
+low_label_cold_start,BACE,classification,0.25,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.7268310265282584,0.0240624501095957,100.0,5,260.0
+low_label_cold_start,BACE,classification,0.5,voi_router,0.0,2D only under limited labels,AUROC,0.8163638985005767,0.019374574488515,0.0,5,520.0
+low_label_cold_start,BACE,classification,0.5,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.8106545559400231,0.0222824503604256,20.16806722689076,5,520.0
+low_label_cold_start,BACE,classification,0.5,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.7799163783160322,0.0190662249590614,100.0,5,520.0
+low_label_cold_start,BACE,classification,1.0,voi_router,0.0,2D only under limited labels,AUROC,0.8471309111880047,0.0013104100844739,0.0,5,1039.0
+low_label_cold_start,BACE,classification,1.0,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.8556660899653978,0.003751994698457,20.16806722689076,5,1039.0
+low_label_cold_start,BACE,classification,1.0,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.8138119953863898,0.0023164267333926,100.0,5,1039.0
+low_label_cold_start,BBBP,classification,0.1,voi_router,0.0,2D only under limited labels,AUROC,0.9000247819191118,0.0151160801079322,0.0,5,134.0
+low_label_cold_start,BBBP,classification,0.1,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.9040890166534498,0.011904614893104,20.0,5,134.0
+low_label_cold_start,BBBP,classification,0.1,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.8920697858842189,0.0134133830708541,100.0,5,134.0
+low_label_cold_start,BBBP,classification,0.25,voi_router,0.0,2D only under limited labels,AUROC,0.879381443298969,0.0207346240162188,0.0,5,334.0
+low_label_cold_start,BBBP,classification,0.25,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.8815424266455194,0.0209103483699847,20.0,5,334.0
+low_label_cold_start,BBBP,classification,0.25,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.8990979381443299,0.0176059069628757,100.0,5,334.0
+low_label_cold_start,BBBP,classification,0.5,voi_router,0.0,2D only under limited labels,AUROC,0.892862807295797,0.017217926680769,0.0,5,668.0
+low_label_cold_start,BBBP,classification,0.5,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.8983148295003964,0.0157956336565473,20.0,5,668.0
+low_label_cold_start,BBBP,classification,0.5,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.9168467486122124,0.0161719869898392,100.0,5,668.0
+low_label_cold_start,BBBP,classification,1.0,voi_router,0.0,2D only under limited labels,AUROC,0.9212827121332277,0.002271819498983,0.0,5,1335.0
+low_label_cold_start,BBBP,classification,1.0,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.9270222045995242,0.0044335234230025,20.0,5,1335.0
+low_label_cold_start,BBBP,classification,1.0,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.9357652656621728,0.0012706142104809,100.0,5,1335.0
+low_label_cold_start,ESOL,regression,0.1,voi_router,0.0,2D only under limited labels,MAE,0.9578858578260204,0.0992997084778795,0.0,5,37.0
+low_label_cold_start,ESOL,regression,0.1,voi_router,20.0,20% routed 3D under limited labels,MAE,0.9321098439497778,0.1036713954420718,19.9203187250996,5,37.0
+low_label_cold_start,ESOL,regression,0.1,voi_router,100.0,all molecules use 3D under limited labels,MAE,0.9636035110747196,0.1211780387131675,100.0,5,37.0
+low_label_cold_start,ESOL,regression,0.25,voi_router,0.0,2D only under limited labels,MAE,0.8019485472983098,0.0587442706118205,0.0,5,94.0
+low_label_cold_start,ESOL,regression,0.25,voi_router,20.0,20% routed 3D under limited labels,MAE,0.7889406390600471,0.059821037902348,19.9203187250996,5,94.0
+low_label_cold_start,ESOL,regression,0.25,voi_router,100.0,all molecules use 3D under limited labels,MAE,0.8360543303478287,0.0691830367649709,100.0,5,94.0
+low_label_cold_start,ESOL,regression,0.5,voi_router,0.0,2D only under limited labels,MAE,0.6536131680876136,0.0388699788823766,0.0,5,187.0
+low_label_cold_start,ESOL,regression,0.5,voi_router,20.0,20% routed 3D under limited labels,MAE,0.6504655139600138,0.0317439775518616,19.9203187250996,5,187.0
+low_label_cold_start,ESOL,regression,0.5,voi_router,100.0,all molecules use 3D under limited labels,MAE,0.6902602146205674,0.0315219640419182,100.0,5,187.0
+low_label_cold_start,ESOL,regression,1.0,voi_router,0.0,2D only under limited labels,MAE,0.5675262522427685,0.0017094686048343,0.0,5,374.0
+low_label_cold_start,ESOL,regression,1.0,voi_router,20.0,20% routed 3D under limited labels,MAE,0.573772261739632,0.0081874164203155,19.9203187250996,5,374.0
+low_label_cold_start,ESOL,regression,1.0,voi_router,100.0,all molecules use 3D under limited labels,MAE,0.6102533849830172,0.0024057475651824,100.0,5,374.0
+low_label_cold_start,FreeSolv,regression,0.1,voi_router,0.0,2D only under limited labels,MAE,2.7074206300474204,0.187040101500882,0.0,5,16.0
+low_label_cold_start,FreeSolv,regression,0.1,voi_router,20.0,20% routed 3D under limited labels,MAE,2.547045952607126,0.2126626815022919,19.871794871794872,5,16.0
+low_label_cold_start,FreeSolv,regression,0.1,voi_router,100.0,all molecules use 3D under limited labels,MAE,2.579661106934532,0.1349859135961409,100.0,5,16.0
+low_label_cold_start,FreeSolv,regression,0.25,voi_router,0.0,2D only under limited labels,MAE,2.992891819226608,0.2554684270587102,0.0,5,40.0
+low_label_cold_start,FreeSolv,regression,0.25,voi_router,20.0,20% routed 3D under limited labels,MAE,2.914849499886024,0.151094033065836,19.871794871794872,5,40.0
+low_label_cold_start,FreeSolv,regression,0.25,voi_router,100.0,all molecules use 3D under limited labels,MAE,3.1081560444999488,0.2373955134995604,100.0,5,40.0
+low_label_cold_start,FreeSolv,regression,0.5,voi_router,0.0,2D only under limited labels,MAE,2.582712493837644,0.3663599608165723,0.0,5,81.0
+low_label_cold_start,FreeSolv,regression,0.5,voi_router,20.0,20% routed 3D under limited labels,MAE,2.5212285644282133,0.3425769095363241,19.871794871794872,5,81.0
+low_label_cold_start,FreeSolv,regression,0.5,voi_router,100.0,all molecules use 3D under limited labels,MAE,2.533571535427052,0.3075284648330229,100.0,5,81.0
+low_label_cold_start,FreeSolv,regression,1.0,voi_router,0.0,2D only under limited labels,MAE,2.253193720647158,0.0468571717341148,0.0,5,162.0
+low_label_cold_start,FreeSolv,regression,1.0,voi_router,20.0,20% routed 3D under limited labels,MAE,2.3282106296397167,0.0347861789253235,19.871794871794872,5,162.0
+low_label_cold_start,FreeSolv,regression,1.0,voi_router,100.0,all molecules use 3D under limited labels,MAE,2.7548246660049145,0.0542422619026797,100.0,5,162.0
+low_label_cold_start,HIV,classification,0.1,voi_router,0.0,2D only under limited labels,AUROC,0.6037827208525395,0.0483972779905886,0.0,5,826.0
+low_label_cold_start,HIV,classification,0.1,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.6060486883466544,0.0340259512235983,19.978914074855037,5,826.0
+low_label_cold_start,HIV,classification,0.1,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.5725645254507267,0.0346388394802853,100.0,5,826.0
+low_label_cold_start,HIV,classification,0.25,voi_router,0.0,2D only under limited labels,AUROC,0.6348479722586374,0.0461809213224125,0.0,5,2065.0
+low_label_cold_start,HIV,classification,0.25,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.6436567006385588,0.0422677628634929,19.978914074855037,5,2065.0
+low_label_cold_start,HIV,classification,0.25,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.6402616258581074,0.0202295240455733,100.0,5,2065.0
+low_label_cold_start,HIV,classification,0.5,voi_router,0.0,2D only under limited labels,AUROC,0.6860419221606687,0.0372542064237478,0.0,5,4129.0
+low_label_cold_start,HIV,classification,0.5,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.673816269858051,0.0393857179172696,19.978914074855037,5,4129.0
+low_label_cold_start,HIV,classification,0.5,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.6935622559591773,0.015700984280106,100.0,5,4129.0
+low_label_cold_start,HIV,classification,1.0,voi_router,0.0,2D only under limited labels,AUROC,0.7246578142400022,0.0042399972386017,0.0,5,8259.0
+low_label_cold_start,HIV,classification,1.0,voi_router,20.0,20% routed 3D under limited labels,AUROC,0.7264304140060049,0.0217470428560425,19.978914074855037,5,8259.0
+low_label_cold_start,HIV,classification,1.0,voi_router,100.0,all molecules use 3D under limited labels,AUROC,0.74859108273072,0.0070062848854233,100.0,5,8259.0
+low_label_cold_start,Lipophilicity,regression,0.1,voi_router,0.0,2D only under limited labels,MAE,0.8048486234566097,0.0248675961960022,0.0,5,181.0
+low_label_cold_start,Lipophilicity,regression,0.1,voi_router,20.0,20% routed 3D under limited labels,MAE,0.7753403438013594,0.0230762976890879,20.0,5,181.0
+low_label_cold_start,Lipophilicity,regression,0.1,voi_router,100.0,all molecules use 3D under limited labels,MAE,0.8458839717639102,0.0474304742821413,100.0,5,181.0
+low_label_cold_start,Lipophilicity,regression,0.25,voi_router,0.0,2D only under limited labels,MAE,0.73336298789932,0.0393422489207081,0.0,5,453.0
+low_label_cold_start,Lipophilicity,regression,0.25,voi_router,20.0,20% routed 3D under limited labels,MAE,0.7141004253135348,0.0321217971900108,20.0,5,453.0
+low_label_cold_start,Lipophilicity,regression,0.25,voi_router,100.0,all molecules use 3D under limited labels,MAE,0.7696331407607218,0.0331489855440809,100.0,5,453.0
+low_label_cold_start,Lipophilicity,regression,0.5,voi_router,0.0,2D only under limited labels,MAE,0.6888876950761565,0.0204173615508973,0.0,5,906.0
+low_label_cold_start,Lipophilicity,regression,0.5,voi_router,20.0,20% routed 3D under limited labels,MAE,0.678821649487399,0.0173490916148481,20.0,5,906.0
+low_label_cold_start,Lipophilicity,regression,0.5,voi_router,100.0,all molecules use 3D under limited labels,MAE,0.715448997507065,0.0152785068774103,100.0,5,906.0
+low_label_cold_start,Lipophilicity,regression,1.0,voi_router,0.0,2D only under limited labels,MAE,0.637899937220314,0.0028928906974381,0.0,5,1812.0
+low_label_cold_start,Lipophilicity,regression,1.0,voi_router,20.0,20% routed 3D under limited labels,MAE,0.6338146772733981,0.0014108649692377,20.0,5,1812.0
+low_label_cold_start,Lipophilicity,regression,1.0,voi_router,100.0,all molecules use 3D under limited labels,MAE,0.6610851645083251,0.0027249906178378,100.0,5,1812.0

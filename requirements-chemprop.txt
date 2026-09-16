@@ -1,0 +1,7 @@
+# Install in a separate Python 3.10 environment.
+chemprop==1.6.1
+numpy==1.26.4
+pandas==2.3.3
+scikit-learn==1.4.2
+rdkit==2026.3.2
+torch==2.3.1

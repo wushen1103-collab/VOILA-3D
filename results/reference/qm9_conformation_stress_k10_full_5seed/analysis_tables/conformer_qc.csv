@@ -1,0 +1,3 @@
+task,n_molecules,conformer_success_rate,energy_nan_rate,mean_elapsed_sec,p95_elapsed_sec,top_failure_reason,main_table_allowed_by_5pct_failure_rule
+QM9_MU,2000,0.989,0.011,0.2690826506614685,0.09418399333953853,embed_failed,True
+QM9_R2,2000,0.989,0.011,0.2690826506614685,0.09418399333953853,embed_failed,True

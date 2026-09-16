@@ -1,0 +1,115 @@
+scenario,task,task_type,router,budget,interpretation,primary_metric,primary_mean,primary_std,call_rate_mean,n_seeds
+missing_or_budgeted_3D_modality,BACE,classification,metric_aware_hybrid,0.0,no 3D available,AUROC,0.8583621683967705,0.0019020216359908,0.0,5
+missing_or_budgeted_3D_modality,BACE,classification,metric_aware_hybrid,5.0,only budgeted subset has 3D,AUROC,0.8583621683967705,0.0019020216359908,0.0,5
+missing_or_budgeted_3D_modality,BACE,classification,metric_aware_hybrid,10.0,only budgeted subset has 3D,AUROC,0.8583621683967705,0.0019020216359908,0.0,5
+missing_or_budgeted_3D_modality,BACE,classification,metric_aware_hybrid,20.0,only budgeted subset has 3D,AUROC,0.8583621683967705,0.0019020216359908,0.0,5
+missing_or_budgeted_3D_modality,BACE,classification,metric_aware_hybrid,40.0,only budgeted subset has 3D,AUROC,0.8583621683967705,0.0019020216359908,0.0,5
+missing_or_budgeted_3D_modality,BACE,classification,metric_aware_hybrid,100.0,all molecules have 3D,AUROC,0.8583621683967705,0.0019020216359908,0.0,5
+missing_or_budgeted_3D_modality,BACE,classification,rich_router,0.0,no 3D available,AUROC,0.8583621683967705,0.0019020216359908,0.0,5
+missing_or_budgeted_3D_modality,BACE,classification,rich_router,5.0,only budgeted subset has 3D,AUROC,0.8609212802768166,0.00340781778034,5.042016806722689,5
+missing_or_budgeted_3D_modality,BACE,classification,rich_router,10.0,only budgeted subset has 3D,AUROC,0.8613249711649364,0.00363328950791,10.084033613445378,5
+missing_or_budgeted_3D_modality,BACE,classification,rich_router,20.0,only budgeted subset has 3D,AUROC,0.8586649365628605,0.0025356417622164,20.16806722689076,5
+missing_or_budgeted_3D_modality,BACE,classification,rich_router,40.0,only budgeted subset has 3D,AUROC,0.8481617647058824,0.0026531392423064,39.91596638655462,5
+missing_or_budgeted_3D_modality,BACE,classification,rich_router,100.0,all molecules have 3D,AUROC,0.8088091118800461,0.0021235414055886,100.0,5
+missing_or_budgeted_3D_modality,BACE,classification,usr_auc_router,0.0,no 3D available,AUROC,0.8583621683967705,0.0019020216359908,0.0,5
+missing_or_budgeted_3D_modality,BACE,classification,usr_auc_router,5.0,only budgeted subset has 3D,AUROC,0.856603229527105,0.0029939906119078,5.042016806722689,5
+missing_or_budgeted_3D_modality,BACE,classification,usr_auc_router,10.0,only budgeted subset has 3D,AUROC,0.8565383506343714,0.0029949277362159,10.084033613445378,5
+missing_or_budgeted_3D_modality,BACE,classification,usr_auc_router,20.0,only budgeted subset has 3D,AUROC,0.8574466551326413,0.0030175380692869,20.16806722689076,5
+missing_or_budgeted_3D_modality,BACE,classification,usr_auc_router,40.0,only budgeted subset has 3D,AUROC,0.8571006343713957,0.0033179592966706,39.91596638655462,5
+missing_or_budgeted_3D_modality,BACE,classification,usr_auc_router,100.0,all molecules have 3D,AUROC,0.8467128027681661,0.0022010240428648,100.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,metric_aware_hybrid,0.0,no 3D available,AUROC,0.9212827121332277,0.002271819498983,0.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,metric_aware_hybrid,5.0,only budgeted subset has 3D,AUROC,0.9224524187153056,0.0030316867333252,4.918032786885246,5
+missing_or_budgeted_3D_modality,BBBP,classification,metric_aware_hybrid,10.0,only budgeted subset has 3D,AUROC,0.923146312450436,0.0036878426716626,9.836065573770492,5
+missing_or_budgeted_3D_modality,BBBP,classification,metric_aware_hybrid,20.0,only budgeted subset has 3D,AUROC,0.9270222045995242,0.0044335234230025,20.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,metric_aware_hybrid,40.0,only budgeted subset has 3D,AUROC,0.9253766851704996,0.004606675475112,40.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,metric_aware_hybrid,100.0,all molecules have 3D,AUROC,0.9357652656621728,0.0012706142104809,100.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,rich_router,0.0,no 3D available,AUROC,0.9212827121332277,0.002271819498983,0.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,rich_router,5.0,only budgeted subset has 3D,AUROC,0.9232850911974624,0.0018900401409234,4.918032786885246,5
+missing_or_budgeted_3D_modality,BBBP,classification,rich_router,10.0,only budgeted subset has 3D,AUROC,0.9242664551942902,0.0021474358720146,9.836065573770492,5
+missing_or_budgeted_3D_modality,BBBP,classification,rich_router,20.0,only budgeted subset has 3D,AUROC,0.9228092783505154,0.0031749652373756,20.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,rich_router,40.0,only budgeted subset has 3D,AUROC,0.9160685963521016,0.0041309727213328,40.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,rich_router,100.0,all molecules have 3D,AUROC,0.928053132434576,0.0021183192488312,100.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,usr_auc_router,0.0,no 3D available,AUROC,0.9212827121332277,0.002271819498983,0.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,usr_auc_router,5.0,only budgeted subset has 3D,AUROC,0.9224524187153056,0.0030316867333252,4.918032786885246,5
+missing_or_budgeted_3D_modality,BBBP,classification,usr_auc_router,10.0,only budgeted subset has 3D,AUROC,0.923146312450436,0.0036878426716626,9.836065573770492,5
+missing_or_budgeted_3D_modality,BBBP,classification,usr_auc_router,20.0,only budgeted subset has 3D,AUROC,0.9270222045995242,0.0044335234230025,20.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,usr_auc_router,40.0,only budgeted subset has 3D,AUROC,0.9253766851704996,0.004606675475112,40.0,5
+missing_or_budgeted_3D_modality,BBBP,classification,usr_auc_router,100.0,all molecules have 3D,AUROC,0.9357652656621728,0.0012706142104809,100.0,5
+missing_or_budgeted_3D_modality,ESOL,regression,metric_aware_hybrid,0.0,no 3D available,MAE,0.5675262522427685,0.0017094686048343,0.0,5
+missing_or_budgeted_3D_modality,ESOL,regression,metric_aware_hybrid,5.0,only budgeted subset has 3D,MAE,0.5552282026161711,0.0031101126458777,5.179282868525896,5
+missing_or_budgeted_3D_modality,ESOL,regression,metric_aware_hybrid,10.0,only budgeted subset has 3D,MAE,0.5485684670490097,0.0050667816352696,9.9601593625498,5
+missing_or_budgeted_3D_modality,ESOL,regression,metric_aware_hybrid,20.0,only budgeted subset has 3D,MAE,0.5415267699921749,0.0103595798775181,19.9203187250996,5
+missing_or_budgeted_3D_modality,ESOL,regression,metric_aware_hybrid,40.0,only budgeted subset has 3D,MAE,0.5381046491159387,0.0053540318465523,39.8406374501992,5
+missing_or_budgeted_3D_modality,ESOL,regression,metric_aware_hybrid,100.0,all molecules have 3D,MAE,0.5903144418397273,0.0060362526270105,100.0,5
+missing_or_budgeted_3D_modality,ESOL,regression,rich_router,0.0,no 3D available,MAE,0.5675262522427685,0.0017094686048343,0.0,5
+missing_or_budgeted_3D_modality,ESOL,regression,rich_router,5.0,only budgeted subset has 3D,MAE,0.5640043742540823,0.0030332078676158,5.179282868525896,5
+missing_or_budgeted_3D_modality,ESOL,regression,rich_router,10.0,only budgeted subset has 3D,MAE,0.5627078914923498,0.0043634417232241,9.9601593625498,5
+missing_or_budgeted_3D_modality,ESOL,regression,rich_router,20.0,only budgeted subset has 3D,MAE,0.5628316116636968,0.006818677107819,19.9203187250996,5
+missing_or_budgeted_3D_modality,ESOL,regression,rich_router,40.0,only budgeted subset has 3D,MAE,0.5707617138737227,0.0063595897795217,39.8406374501992,5
+missing_or_budgeted_3D_modality,ESOL,regression,rich_router,100.0,all molecules have 3D,MAE,0.6694419256689065,0.0094452393438156,100.0,5
+missing_or_budgeted_3D_modality,ESOL,regression,scalar_router,0.0,no 3D available,MAE,0.5675262522427685,0.0017094686048343,0.0,5
+missing_or_budgeted_3D_modality,ESOL,regression,scalar_router,5.0,only budgeted subset has 3D,MAE,0.5552282026161711,0.0031101126458777,5.179282868525896,5
+missing_or_budgeted_3D_modality,ESOL,regression,scalar_router,10.0,only budgeted subset has 3D,MAE,0.5485684670490097,0.0050667816352696,9.9601593625498,5
+missing_or_budgeted_3D_modality,ESOL,regression,scalar_router,20.0,only budgeted subset has 3D,MAE,0.5415267699921749,0.0103595798775181,19.9203187250996,5
+missing_or_budgeted_3D_modality,ESOL,regression,scalar_router,40.0,only budgeted subset has 3D,MAE,0.5381046491159387,0.0053540318465523,39.8406374501992,5
+missing_or_budgeted_3D_modality,ESOL,regression,scalar_router,100.0,all molecules have 3D,MAE,0.5903144418397273,0.0060362526270105,100.0,5
+missing_or_budgeted_3D_modality,ESOL,regression,usr_auc_router,0.0,no 3D available,MAE,0.5675262522427685,0.0017094686048343,0.0,5
+missing_or_budgeted_3D_modality,ESOL,regression,usr_auc_router,5.0,only budgeted subset has 3D,MAE,0.5671609305172802,0.0037250559398204,5.179282868525896,5
+missing_or_budgeted_3D_modality,ESOL,regression,usr_auc_router,10.0,only budgeted subset has 3D,MAE,0.5685615207542936,0.0053033960283074,9.9601593625498,5
+missing_or_budgeted_3D_modality,ESOL,regression,usr_auc_router,20.0,only budgeted subset has 3D,MAE,0.573772261739632,0.0081874164203155,19.9203187250996,5
+missing_or_budgeted_3D_modality,ESOL,regression,usr_auc_router,40.0,only budgeted subset has 3D,MAE,0.5663280000527066,0.0096134305977336,39.8406374501992,5
+missing_or_budgeted_3D_modality,ESOL,regression,usr_auc_router,100.0,all molecules have 3D,MAE,0.6102533849830172,0.0024057475651824,100.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,metric_aware_hybrid,0.0,no 3D available,MAE,1.2068165466416167,0.0,0.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,metric_aware_hybrid,5.0,only budgeted subset has 3D,MAE,1.2068165466416167,0.0,0.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,metric_aware_hybrid,10.0,only budgeted subset has 3D,MAE,1.2068165466416167,0.0,0.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,metric_aware_hybrid,20.0,only budgeted subset has 3D,MAE,1.2068165466416167,0.0,0.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,metric_aware_hybrid,40.0,only budgeted subset has 3D,MAE,1.2068165466416167,0.0,0.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,metric_aware_hybrid,100.0,all molecules have 3D,MAE,1.2068165466416167,0.0,0.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,rich_router,0.0,no 3D available,MAE,1.2068165466416167,0.0,0.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,rich_router,5.0,only budgeted subset has 3D,MAE,1.370655140207656,0.0434727865838812,5.128205128205128,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,rich_router,10.0,only budgeted subset has 3D,MAE,1.5113671409789404,0.0092733742914503,9.935897435897436,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,rich_router,20.0,only budgeted subset has 3D,MAE,1.7428811358360543,0.0308371198229271,19.871794871794872,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,rich_router,40.0,only budgeted subset has 3D,MAE,1.990866014724805,0.0520542218226691,40.06410256410257,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,rich_router,100.0,all molecules have 3D,MAE,2.726286957804973,0.0392026560674743,100.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,usr_auc_router,0.0,no 3D available,MAE,1.2068165466416167,0.0,0.0,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,usr_auc_router,5.0,only budgeted subset has 3D,MAE,1.2068165466416167,0.0,5.128205128205128,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,usr_auc_router,10.0,only budgeted subset has 3D,MAE,1.2068165466416167,0.0,9.935897435897436,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,usr_auc_router,20.0,only budgeted subset has 3D,MAE,1.2068165466416167,0.0,19.871794871794872,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,usr_auc_router,40.0,only budgeted subset has 3D,MAE,1.2068165466416167,0.0,40.06410256410257,5
+missing_or_budgeted_3D_modality,FreeSolv,regression,usr_auc_router,100.0,all molecules have 3D,MAE,1.2068165466416167,0.0,100.0,5
+missing_or_budgeted_3D_modality,HIV,classification,metric_aware_hybrid,0.0,no 3D available,AUROC,0.7246578142400022,0.0042399972386017,0.0,5
+missing_or_budgeted_3D_modality,HIV,classification,metric_aware_hybrid,5.0,only budgeted subset has 3D,AUROC,0.7245647791827012,0.0069223889558347,5.007907221929362,5
+missing_or_budgeted_3D_modality,HIV,classification,metric_aware_hybrid,10.0,only budgeted subset has 3D,AUROC,0.7271288817468036,0.0066680905685156,10.015814443858725,5
+missing_or_budgeted_3D_modality,HIV,classification,metric_aware_hybrid,20.0,only budgeted subset has 3D,AUROC,0.7370448682708165,0.0117471231367263,19.97891407485504,5
+missing_or_budgeted_3D_modality,HIV,classification,metric_aware_hybrid,40.0,only budgeted subset has 3D,AUROC,0.7471856895166404,0.0056276474207451,40.01054296257248,5
+missing_or_budgeted_3D_modality,HIV,classification,metric_aware_hybrid,100.0,all molecules have 3D,AUROC,0.74859108273072,0.0070062848854233,100.0,5
+missing_or_budgeted_3D_modality,HIV,classification,rich_router,0.0,no 3D available,AUROC,0.7246578142400022,0.0042399972386017,0.0,5
+missing_or_budgeted_3D_modality,HIV,classification,rich_router,5.0,only budgeted subset has 3D,AUROC,0.7218991838288155,0.0106905398432709,5.007907221929362,5
+missing_or_budgeted_3D_modality,HIV,classification,rich_router,10.0,only budgeted subset has 3D,AUROC,0.7155967635077036,0.0123301609439955,10.015814443858725,5
+missing_or_budgeted_3D_modality,HIV,classification,rich_router,20.0,only budgeted subset has 3D,AUROC,0.7087756022610338,0.0139412090528768,19.97891407485504,5
+missing_or_budgeted_3D_modality,HIV,classification,rich_router,40.0,only budgeted subset has 3D,AUROC,0.7083668118577409,0.0124956378461217,40.01054296257248,5
+missing_or_budgeted_3D_modality,HIV,classification,rich_router,100.0,all molecules have 3D,AUROC,0.7041555658927842,0.0093428035165782,100.0,5
+missing_or_budgeted_3D_modality,HIV,classification,usr_auc_router,0.0,no 3D available,AUROC,0.7246578142400022,0.0042399972386017,0.0,5
+missing_or_budgeted_3D_modality,HIV,classification,usr_auc_router,5.0,only budgeted subset has 3D,AUROC,0.7245647791827012,0.0069223889558347,5.007907221929362,5
+missing_or_budgeted_3D_modality,HIV,classification,usr_auc_router,10.0,only budgeted subset has 3D,AUROC,0.7271288817468036,0.0066680905685156,10.015814443858725,5
+missing_or_budgeted_3D_modality,HIV,classification,usr_auc_router,20.0,only budgeted subset has 3D,AUROC,0.7370448682708165,0.0117471231367263,19.97891407485504,5
+missing_or_budgeted_3D_modality,HIV,classification,usr_auc_router,40.0,only budgeted subset has 3D,AUROC,0.7471856895166404,0.0056276474207451,40.01054296257248,5
+missing_or_budgeted_3D_modality,HIV,classification,usr_auc_router,100.0,all molecules have 3D,AUROC,0.74859108273072,0.0070062848854233,100.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,metric_aware_hybrid,0.0,no 3D available,MAE,0.5637900279689473,0.0045069410288754,0.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,metric_aware_hybrid,5.0,only budgeted subset has 3D,MAE,0.5618662634863141,0.0050996446169449,4.958677685950414,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,metric_aware_hybrid,10.0,only budgeted subset has 3D,MAE,0.5608691875624124,0.0047588362436979,10.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,metric_aware_hybrid,20.0,only budgeted subset has 3D,MAE,0.561840094316189,0.0042755273680685,20.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,metric_aware_hybrid,40.0,only budgeted subset has 3D,MAE,0.561353132281634,0.0055333938271531,40.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,metric_aware_hybrid,100.0,all molecules have 3D,MAE,0.5733019543495707,0.0025466246734741,100.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,rich_router,0.0,no 3D available,MAE,0.5637900279689473,0.0045069410288754,0.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,rich_router,5.0,only budgeted subset has 3D,MAE,0.5641525934889158,0.0054800659889159,4.958677685950414,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,rich_router,10.0,only budgeted subset has 3D,MAE,0.5682897862423413,0.0051603136552186,10.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,rich_router,20.0,only budgeted subset has 3D,MAE,0.5781774758864887,0.003288143232155,20.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,rich_router,40.0,only budgeted subset has 3D,MAE,0.5958473173660911,0.0025909826776855,40.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,rich_router,100.0,all molecules have 3D,MAE,0.667742421490853,0.004235529261111,100.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,usr_auc_router,0.0,no 3D available,MAE,0.5637900279689473,0.0045069410288754,0.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,usr_auc_router,5.0,only budgeted subset has 3D,MAE,0.5618662634863141,0.0050996446169449,4.958677685950414,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,usr_auc_router,10.0,only budgeted subset has 3D,MAE,0.5608691875624124,0.0047588362436979,10.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,usr_auc_router,20.0,only budgeted subset has 3D,MAE,0.561840094316189,0.0042755273680685,20.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,usr_auc_router,40.0,only budgeted subset has 3D,MAE,0.561353132281634,0.0055333938271531,40.0,5
+missing_or_budgeted_3D_modality,Lipophilicity,regression,usr_auc_router,100.0,all molecules have 3D,MAE,0.5733019543495707,0.0025466246734741,100.0,5

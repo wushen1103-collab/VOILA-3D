@@ -1,0 +1,10 @@
+task,objective,feature_group,gate_quantile,n_seed_selected
+QM9_MU,R0_raw_utility,chemistry_uncertainty,,1
+QM9_MU,R1_binary,chemistry_uncertainty,,1
+QM9_MU,R1_binary,full_mechanism,,1
+QM9_MU,R2_margin_binary,full_mechanism,0.5,1
+QM9_MU,R3_three_class,full_mechanism,,1
+QM9_R2,R0_raw_utility,chemistry_uncertainty,,1
+QM9_R2,R3_three_class,full_mechanism,,1
+QM9_R2,R4_pairwise_margin_weighted,chemistry_uncertainty,,2
+QM9_R2,R5_rank_regression,full_mechanism,,1

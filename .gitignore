@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Environments and local configuration
+.venv/
+.conda_env/
+.conda_pkgs/
+.chemprop_venv/
+.env
+.env.*
+
+# Downloaded data and generated artifacts
+data/raw/
+data/processed/
+logs/
+checkpoints/
+models/
+results/*
+!results/reference/
+!results/reference/**
+
+# Large machine-learning artifacts
+*.ckpt
+*.joblib
+*.npy
+*.npz
+*.parquet
+*.pkl
+*.pt
+*.pth
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
