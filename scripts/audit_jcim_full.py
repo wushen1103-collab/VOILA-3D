@@ -877,7 +877,7 @@ Current rerun backbone rows include classic descriptor ML and Chemprop D-MPNN. A
 ## Reviewer-Safe Story Update
 
 1. More molecular information is not automatically better: fixed 3D spending and naive heuristics can be harmful.
-2. R9 should be presented as the Utility-LCB acquisition policy inside VOILA-3D, not as the final predictor.
+2. R9 should be presented as the Utility-LCB substitution policy inside VOILA-3D, not as the final predictor.
 3. The main acquisition claim is risk control: when evidence for 3D value is weak, R9 abstains and largely removes negative transfer.
 4. Strong claims still need new runs for independent nested calibration, a true conformation-sensitive benchmark, and a strong 3D backbone.
 

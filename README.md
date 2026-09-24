@@ -1,10 +1,10 @@
 # VOILA-3D
 
-VOILA-3D is a reliability-aware system for budgeted 2D-to-3D information
-acquisition in molecular property prediction. It learns sample-level
-counterfactual utility from out-of-fold predictions, ranks candidate molecules
-for 3D acquisition, and applies a Utility-LCB permission rule that can abstain
-when the available evidence does not support beneficial acquisition.
+VOILA-3D is a reliability-aware system for adaptive 2D-to-2D+3D prediction
+substitution in molecular property modeling. It learns sample-level paired
+utility from out-of-fold predictions, ranks candidate molecules, and applies a
+Utility-LCB permission rule that retains the complete 2D prediction when the
+available evidence does not support using its augmented replacement.
 
 This repository contains the experiment source used for the paper, compact
 reference outputs, exact protocol settings, and verification utilities. Raw
@@ -58,6 +58,7 @@ The main stages are:
 ```bash
 bash scripts/reproduce_paper.sh core
 bash scripts/reproduce_paper.sh robustness
+bash scripts/reproduce_paper.sh partitions
 bash scripts/reproduce_paper.sh qm9
 bash scripts/reproduce_paper.sh baselines
 bash scripts/reproduce_paper.sh audits
@@ -76,6 +77,12 @@ The operational R9 policy and the fold-separated calibration analysis are distin
   fold excluded from router and gate selection.
 
 Detailed stage-to-output mapping is provided in `REPRODUCIBILITY.md`.
+
+The `partitions` stage refits the paired experts and R7--R9 policies on five
+additional randomized scaffold-disjoint assignments. It reuses only the
+split-invariant molecular feature arrays from the primary run; model fitting,
+OOF utility estimation, router selection, and test evaluation are repeated for
+every assignment.
 
 ## Data and Results
 

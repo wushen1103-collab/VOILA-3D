@@ -131,6 +131,78 @@ run_core() {
     --bootstrap-iters 800
 }
 
+run_partition_robustness() {
+  run_core
+  local output_root="results/partition_robustness"
+  local split_seed
+  for split_seed in 1 2 3 4 5; do
+    run_if_missing "$output_root/split${split_seed}_cls/run_metadata.json" \
+      "$PYTHON" experiments/fast_screen.py \
+      --tasks BACE BBBP HIV \
+      --split scaffold_randomized \
+      --split-seed "$split_seed" \
+      --seeds "${SEEDS[@]}" \
+      --budgets "${BUDGETS[@]}" \
+      --max-mols 12000 \
+      --conformers 10 \
+      --feature2d-set rdkit2d_combo \
+      --feature3d-set usr \
+      --feature-cache-source-dir results/if_oof_usr_rdkit2d_combo_cls_5seed \
+      --feature-cache-source-split scaffold_balanced \
+      --match-source-split-fractions \
+      --conformer-jobs "$CONFORMER_JOBS" \
+      --model-threads "$MODEL_THREADS" \
+      --xgb-device "$XGB_DEVICE" \
+      --router-label-source oof \
+      --router-folds 5 \
+      --router-feature-set ecfp_desc \
+      --classification-benefit auc_contrib \
+      --out-dir "$output_root/split${split_seed}_cls"
+
+    run_if_missing "$output_root/split${split_seed}_reg/run_metadata.json" \
+      "$PYTHON" experiments/fast_screen.py \
+      --tasks ESOL FreeSolv Lipophilicity \
+      --split scaffold_randomized \
+      --split-seed "$split_seed" \
+      --seeds "${SEEDS[@]}" \
+      --budgets "${BUDGETS[@]}" \
+      --max-mols 12000 \
+      --conformers 10 \
+      --feature2d-set rdkit2d_combo \
+      --feature3d-set rdkit_scalar \
+      --feature-cache-source-dir results/if_oof_scalar_rdkit2d_combo_reg_5seed \
+      --feature-cache-source-split scaffold_balanced \
+      --match-source-split-fractions \
+      --conformer-jobs "$CONFORMER_JOBS" \
+      --model-threads "$MODEL_THREADS" \
+      --xgb-device "$XGB_DEVICE" \
+      --router-label-source oof \
+      --router-folds 5 \
+      --router-feature-set ecfp_desc \
+      --out-dir "$output_root/split${split_seed}_reg"
+
+    run_if_missing "$output_root/split${split_seed}_gated/budget_integrated_gain_summary.csv" \
+      "$PYTHON" experiments/run_router_gated_selection.py \
+      --oof-results-dir "$output_root/split${split_seed}_cls" \
+      --oof-results-dir "$output_root/split${split_seed}_reg" \
+      --budgets "${BUDGETS[@]}" \
+      --main-budget 20 \
+      --router-estimators 64 \
+      --router-n-jobs "$ROUTER_JOBS" \
+      --pair-samples 5000 \
+      --pair-margin-frac 0.25 \
+      --bootstrap-iters 1000 \
+      --allow-safe-abstain \
+      --safe-rule utility_lcb \
+      --safe-bootstrap-iters 500 \
+      --safe-min-selected 8 \
+      --safe-utility-lcb-threshold 0.0 \
+      --min-oof-big-to-call 0.0 \
+      --out-dir "$output_root/split${split_seed}_gated"
+  done
+  "$PYTHON" scripts/summarize_partition_robustness.py --root "$output_root"
+}
+
 run_usr_cache() {
   run_if_missing results/fast_screen_xgb_k10_auc_oof_ecfp_router_5seed_cls/run_metadata.json \
     "$PYTHON" experiments/fast_screen.py \
@@ -343,19 +415,21 @@ case "$STAGE" in
   smoke) run_smoke ;;
   core) run_core ;;
   robustness) run_robustness ;;
+  partitions) run_partition_robustness ;;
   qm9) run_qm9 ;;
   baselines) run_baselines ;;
   audits) run_audits ;;
   all)
     run_core
     run_robustness
+    run_partition_robustness
     run_qm9
     run_baselines
     run_audits
     ;;
   *)
     printf 'Unknown stage: %s\n' "$STAGE" >&2
-    printf 'Choose one of: smoke, core, robustness, qm9, baselines, audits, all\n' >&2
+    printf 'Choose one of: smoke, core, robustness, partitions, qm9, baselines, audits, all\n' >&2
     exit 2
     ;;
 esac

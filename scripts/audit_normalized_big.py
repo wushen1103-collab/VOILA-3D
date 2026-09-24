@@ -291,7 +291,7 @@ def write_revised_story(
     lines.append("## 1. Method Identity Is Now Fixed\n")
     lines.append(
         "VOILA-3D should be written as the full adaptive information-acquisition system, not as a single final predictor. "
-        "The R9 Utility-LCB Guardrail is the final acquisition policy inside VOILA-3D. It decides whether the selected 3D information is reliable enough to acquire under a budget upper bound.\n"
+        "The R9 Utility-LCB Guardrail is the final substitution policy inside VOILA-3D. It decides whether selected augmented predictions are sufficiently supported to replace their 2D references under a budget upper bound.\n"
     )
     lines.append(
         "Therefore the paper should separate two result families: prediction performance and acquisition performance. "
@@ -299,7 +299,7 @@ def write_revised_story(
     )
     lines.append("Do not claim: `R9 achieves SOTA on all six tasks.`\n")
     lines.append(
-        "Recommended claim: VOILA-3D reaches competitive/same-protocol expert-system prediction performance while the R9 acquisition policy largely eliminates harmful 3D acquisition compared with forced-budget and heuristic routers.\n"
+        "Recommended claim: VOILA-3D reaches competitive same-protocol expert-system prediction performance while the R9 substitution policy largely eliminates harmful 2D-to-2D+3D replacement compared with forced-budget and heuristic routers.\n"
     )
     lines.append("## 2. BIG Scale Audit\n")
     lines.append(
@@ -344,7 +344,7 @@ def write_revised_story(
     lines.append("## 4. Final Claim Should Be About Avoiding Harmful Acquisition\n")
     lines.append(
         "The central IF story should be: more molecular information is not necessarily better. 3D information is costly, conditionally useful, noisy, and sometimes harmful. "
-        "VOILA-3D reframes 3D fusion as reliability-aware information acquisition: cheap 2D evidence -> OOF counterfactual utility -> sample-level ranking -> budget upper bound -> OOF utility-LCB reliability test.\n"
+        "VOILA-3D reframes 3D fusion as reliability-aware prediction substitution: complete 2D reference -> OOF paired utility -> sample-level ranking -> budget upper bound -> Utility-LCB permission.\n"
     )
     lines.append(
         "The strongest empirical conclusion is not that R9 extracts large positive 3D gains everywhere. The stronger and better-supported claim is that naive 3D spending often causes negative transfer, while R9 learns to abstain when the evidence for 3D value is insufficient.\n"

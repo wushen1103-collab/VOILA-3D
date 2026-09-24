@@ -10,15 +10,29 @@ from sklearn.preprocessing import StandardScaler
 from .metrics import classification_metrics, higher_is_better, per_sample_loss, primary_metric, regression_metrics
 
 
-def uncertainty_scores(task_type: str, pred2d: np.ndarray) -> np.ndarray:
+def uncertainty_scores(
+    task_type: str,
+    pred2d: np.ndarray,
+    reference_pred2d: np.ndarray | None = None,
+) -> np.ndarray:
     if task_type == "classification":
         return 1.0 - np.maximum(pred2d, 1.0 - pred2d)
-    z = np.abs((pred2d - np.nanmean(pred2d)) / (np.nanstd(pred2d) + 1e-8))
+    reference = pred2d if reference_pred2d is None else np.asarray(reference_pred2d, dtype=float)
+    mu = float(np.nanmean(reference))
+    sd = float(np.nanstd(reference))
+    if not np.isfinite(sd) or sd < 1e-8:
+        sd = 1.0
+    z = np.abs((np.asarray(pred2d, dtype=float) - mu) / sd)
     return z
 
 
-def make_router_features(x_desc: np.ndarray, pred2d: np.ndarray, task_type: str) -> np.ndarray:
-    unc = uncertainty_scores(task_type, pred2d)[:, None]
+def make_router_features(
+    x_desc: np.ndarray,
+    pred2d: np.ndarray,
+    task_type: str,
+    uncertainty_reference: np.ndarray | None = None,
+) -> np.ndarray:
+    unc = uncertainty_scores(task_type, pred2d, uncertainty_reference)[:, None]
     pred = pred2d[:, None]
     return np.hstack([x_desc, pred, unc]).astype(np.float32)
 

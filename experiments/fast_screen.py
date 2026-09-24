@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import platform
+import shutil
 import subprocess
 import sys
 import time
@@ -38,7 +39,12 @@ from voila3d.utils import ensure_dir, now_iso, set_reproducible
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--tasks", nargs="+", default=["ESOL", "FreeSolv", "Lipophilicity", "BBBP", "BACE", "HIV"])
-    p.add_argument("--split", choices=["scaffold", "scaffold_balanced", "random"], default="scaffold_balanced")
+    p.add_argument(
+        "--split",
+        choices=["scaffold", "scaffold_balanced", "scaffold_randomized", "random"],
+        default="scaffold_balanced",
+    )
+    p.add_argument("--split-seed", type=int, default=0)
     p.add_argument("--seeds", nargs="+", type=int, default=[0, 1, 2])
     p.add_argument("--budgets", nargs="+", type=float, default=[0, 5, 10, 20, 40, 60, 80, 100])
     p.add_argument("--max-mols", type=int, default=None)
@@ -55,6 +61,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--classification-benefit", choices=["logloss", "margin", "auc_contrib"], default="logloss")
     p.add_argument("--out-dir", default="results/fast_screen")
     p.add_argument("--data-dir", default="data/raw")
+    p.add_argument("--feature-cache-source-dir", default=None)
+    p.add_argument("--feature-cache-source-split", default=None)
+    p.add_argument("--match-source-split-fractions", action="store_true")
     return p.parse_args()
 
 
@@ -132,8 +141,9 @@ def _make_router_features(
     pred2d: np.ndarray,
     task_type: str,
     feature_set: str,
+    uncertainty_reference: np.ndarray | None = None,
 ) -> np.ndarray:
-    base = make_router_features(x_desc, pred2d, task_type)
+    base = make_router_features(x_desc, pred2d, task_type, uncertainty_reference)
     if feature_set == "desc":
         return base
     if feature_set == "ecfp_desc":
@@ -195,7 +205,14 @@ def _fit_oof_router_labels(
     benefit = true_benefit(task_type, y[idx], pred2d_oof[ok], pred3d_oof[ok], classification_mode=classification_benefit)
     return {
         "index": idx,
-        "x_router": _make_router_features(x_ecfp[idx], x_desc[idx], pred2d_oof[ok], task_type, feature_set),
+        "x_router": _make_router_features(
+            x_ecfp[idx],
+            x_desc[idx],
+            pred2d_oof[ok],
+            task_type,
+            feature_set,
+            uncertainty_reference=pred2d_oof[ok],
+        ),
         "benefit": benefit,
         "pred2d": pred2d_oof[ok],
         "pred3d": pred3d_oof[ok],
@@ -216,7 +233,19 @@ def _feature_cache_paths(out_dir: Path, task: str, split: str, max_mols: int | N
     }
 
 
-def _load_or_build_features(df: pd.DataFrame, out_dir: Path, task: str, split: str, max_mols: int | None, conformers: int, feature3d_set: str, conformer_jobs: int, seed: int):
+def _load_or_build_features(
+    df: pd.DataFrame,
+    out_dir: Path,
+    task: str,
+    split: str,
+    max_mols: int | None,
+    conformers: int,
+    feature3d_set: str,
+    conformer_jobs: int,
+    seed: int,
+    feature_cache_source_dir: str | None = None,
+    feature_cache_source_split: str | None = None,
+):
     paths = _feature_cache_paths(out_dir, task, split, max_mols, conformers, feature3d_set)
     if all(p.exists() for p in paths.values()):
         meta = pd.read_csv(paths["meta"])
@@ -225,6 +254,39 @@ def _load_or_build_features(df: pd.DataFrame, out_dir: Path, task: str, split: s
         x3d = np.load(paths["x3d"])
         manifest = pd.read_csv(paths["manifest"])
         return meta, x_ecfp, x_desc, x3d, manifest
+    if feature_cache_source_dir:
+        source_paths = _feature_cache_paths(
+            Path(feature_cache_source_dir),
+            task,
+            feature_cache_source_split or split,
+            max_mols,
+            conformers,
+            feature3d_set,
+        )
+        missing = [
+            str(source_paths[key])
+            for key in ["meta", "ecfp", "desc", "x3d", "manifest"]
+            if not source_paths[key].exists()
+        ]
+        if missing:
+            raise FileNotFoundError("Missing reusable feature cache files: " + "; ".join(missing))
+        source_meta = pd.read_csv(source_paths["meta"])
+        if source_meta["mol_id"].astype(str).tolist() != df["mol_id"].astype(str).tolist():
+            raise ValueError(f"Feature cache molecule order mismatch for {task}")
+        meta = df[["mol_id", "canonical_smiles", "y", "split"]].copy()
+        meta.to_csv(paths["meta"], index=False)
+        for key in ["ecfp", "desc", "x3d", "manifest"]:
+            try:
+                os.link(source_paths[key], paths[key])
+            except OSError:
+                shutil.copy2(source_paths[key], paths[key])
+        return (
+            meta,
+            np.load(paths["ecfp"]),
+            np.load(paths["desc"]),
+            np.load(paths["x3d"]),
+            pd.read_csv(paths["manifest"]),
+        )
     x_ecfp, x_desc, x3d, manifest = build_feature_tables(
         df,
         n_bits=2048,
@@ -260,13 +322,45 @@ def run_task(task: str, args: argparse.Namespace) -> dict[str, str | int | float
     ensure_dir(out_dir / "predictions")
     set_reproducible(min(args.seeds))
 
-    df, spec, raw_path = load_dataset(task, args.data_dir, args.max_mols, seed=min(args.seeds))
-    df["split"] = assign_splits(df, args.split, seed=min(args.seeds), task_type=spec.task_type)
+    df, spec, raw_path = load_dataset(task, args.data_dir, args.max_mols, seed=0)
+    frac_train, frac_val = 0.8, 0.1
+    if args.match_source_split_fractions:
+        if not args.feature_cache_source_dir:
+            raise ValueError("--match-source-split-fractions requires --feature-cache-source-dir")
+        source_meta_path = _feature_cache_paths(
+            Path(args.feature_cache_source_dir),
+            task,
+            args.feature_cache_source_split or args.split,
+            args.max_mols,
+            args.conformers,
+            args.feature3d_set,
+        )["meta"]
+        source_meta = pd.read_csv(source_meta_path)
+        frac_train = float((source_meta["split"] == "train").mean())
+        frac_val = float((source_meta["split"] == "val").mean())
+    df["split"] = assign_splits(
+        df,
+        args.split,
+        seed=args.split_seed,
+        frac_train=frac_train,
+        frac_val=frac_val,
+        task_type=spec.task_type,
+    )
     feature_paths = _feature_cache_paths(out_dir, task, args.split, args.max_mols, args.conformers, args.feature3d_set)
     feature_cache_hit = all(p.exists() for p in feature_paths.values())
     feature_start = time.perf_counter()
     meta, x_ecfp, x_desc, x3d, manifest = _load_or_build_features(
-        df, out_dir, task, args.split, args.max_mols, args.conformers, args.feature3d_set, args.conformer_jobs, seed=min(args.seeds)
+        df,
+        out_dir,
+        task,
+        args.split,
+        args.max_mols,
+        args.conformers,
+        args.feature3d_set,
+        args.conformer_jobs,
+        seed=0,
+        feature_cache_source_dir=args.feature_cache_source_dir,
+        feature_cache_source_split=args.feature_cache_source_split,
     )
     feature_elapsed_sec = time.perf_counter() - feature_start
     desc_df = descriptor_frame(df, x_desc)
@@ -310,6 +404,7 @@ def run_task(task: str, args: argparse.Namespace) -> dict[str, str | int | float
         predict_start = time.perf_counter()
         pred2d_val = _predict(m2d, spec.task_type, x2d[val])
         pred3d_val = _predict(m3d, spec.task_type, x3d_aug[val])
+        pred2d_train = _predict(m2d, spec.task_type, x2d[train])
         pred2d_test = _predict(m2d, spec.task_type, x2d[test])
         pred3d_test = _predict(m3d, spec.task_type, x3d_aug[test])
         predict_sec = time.perf_counter() - predict_start
@@ -332,10 +427,18 @@ def run_task(task: str, args: argparse.Namespace) -> dict[str, str | int | float
             metric_rows.append(row)
 
         benefit_val = true_benefit(spec.task_type, y[val], pred2d_val, pred3d_val, classification_mode=args.classification_benefit)
-        router_x_val = _make_router_features(x_ecfp[val], x_desc[val], pred2d_val, spec.task_type, args.router_feature_set)
+        router_x_val = _make_router_features(
+            x_ecfp[val],
+            x_desc[val],
+            pred2d_val,
+            spec.task_type,
+            args.router_feature_set,
+            uncertainty_reference=pred2d_train,
+        )
         router_x_train = router_x_val
         router_benefit_train = benefit_val
         router_label_source = "val"
+        uncertainty_reference = pred2d_train
         oof_labels = None
         oof_label_sec = 0.0
         if args.router_label_source == "oof":
@@ -361,15 +464,25 @@ def run_task(task: str, args: argparse.Namespace) -> dict[str, str | int | float
                 router_x_train = oof_labels["x_router"]
                 router_benefit_train = oof_labels["benefit"]
                 router_label_source = f"oof{args.router_folds}"
+                uncertainty_reference = oof_labels["pred2d"]
             else:
                 print(f"[warn] {task} seed={seed}: OOF router labels unavailable; falling back to val", flush=True)
         router_fit_start = time.perf_counter()
         router = train_voi_router(router_x_train, router_benefit_train, seed=seed)
         router_fit_sec = time.perf_counter() - router_fit_start
         route_eval_start = time.perf_counter()
-        router_scores = router.predict(_make_router_features(x_ecfp[test], x_desc[test], pred2d_test, spec.task_type, args.router_feature_set))
+        router_scores = router.predict(
+            _make_router_features(
+                x_ecfp[test],
+                x_desc[test],
+                pred2d_test,
+                spec.task_type,
+                args.router_feature_set,
+                uncertainty_reference=uncertainty_reference,
+            )
+        )
         random_scores = np.random.default_rng(seed).normal(size=test.sum())
-        uncertainty = uncertainty_scores(spec.task_type, pred2d_test)
+        uncertainty = uncertainty_scores(spec.task_type, pred2d_test, uncertainty_reference)
         flex = x_desc[test, 2] + 0.05 * x_desc[test, 1]
         oracle = true_benefit(spec.task_type, y[test], pred2d_test, pred3d_test, classification_mode=args.classification_benefit)
         curves = evaluate_routing_curves(
@@ -465,6 +578,7 @@ def run_task(task: str, args: argparse.Namespace) -> dict[str, str | int | float
                 "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES"),
                 "model_threads": int(args.model_threads),
                 "conformer_jobs": int(args.conformer_jobs),
+                "split_seed": int(args.split_seed),
             }
         )
 
@@ -504,6 +618,7 @@ def main() -> None:
         "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES"),
         "tasks": args.tasks,
         "split": args.split,
+        "split_seed": args.split_seed,
         "seeds": args.seeds,
         "max_mols": args.max_mols,
         "conformers": args.conformers,
@@ -513,6 +628,10 @@ def main() -> None:
         "router_folds": args.router_folds,
         "router_feature_set": args.router_feature_set,
         "classification_benefit": args.classification_benefit,
+        "regression_uncertainty_reference": "same-seed non-test OOF predictions when OOF labels are available",
+        "feature_cache_source_dir": args.feature_cache_source_dir,
+        "feature_cache_source_split": args.feature_cache_source_split,
+        "match_source_split_fractions": args.match_source_split_fractions,
     }
     (out_dir / "run_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 

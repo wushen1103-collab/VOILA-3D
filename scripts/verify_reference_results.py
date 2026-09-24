@@ -101,7 +101,19 @@ def verify_reference_files(reference_dir: Path) -> None:
         / "nested_selection_long.csv"
     )
     if set(nested["seed"].astype(int)) != {0, 1, 2, 3, 4}:
-        raise RuntimeError("Nested audit does not contain the expected seeds 0--4.")
+        raise RuntimeError("Fold-separated calibration does not contain the expected seeds 0--4.")
+
+    partition_dir = reference_dir / "partition_robustness"
+    partition_macro = pd.read_csv(partition_dir / "macro_by_partition.csv")
+    if set(partition_macro["split_seed"].astype(int)) != {1, 2, 3, 4, 5}:
+        raise RuntimeError("Partition robustness does not contain split seeds 1--5.")
+    if set(partition_macro["policy"]) != {"Random", "R7", "R8", "R9"}:
+        raise RuntimeError("Partition robustness policy set is incomplete.")
+    partition_experts = pd.read_csv(partition_dir / "expert_summary.csv")
+    if set(partition_experts["task"]) != PRIMARY_TASKS:
+        raise RuntimeError("Partition robustness expert task set is incomplete.")
+    if set(partition_experts["n_partitions"].astype(int)) != {5}:
+        raise RuntimeError("Partition expert summaries do not uniformly use five assignments.")
 
     print(f"Verified {len(entries)} reference CSV files and five-seed protocol invariants.")
 

@@ -10,6 +10,13 @@ protocol:
   main_budget_percent: 20
   max_molecules: 12000
 
+partition_robustness:
+  split: scaffold_randomized
+  split_seeds: [1, 2, 3, 4, 5]
+  model_seeds: [0, 1, 2, 3, 4]
+  match_primary_task_fractions: true
+  keep_scaffolds_disjoint: true
+
 benchmarks:
   regression: [ESOL, FreeSolv, Lipophilicity]
   classification: [BACE, BBBP, HIV]
@@ -32,7 +39,7 @@ router:
     permission_bootstrap_iterations: 500
     minimum_selected: 8
     utility_lcb_threshold: 0.0
-  nested_audit:
+  fold_separated_calibration:
     estimators: 48
     pair_samples: 3000
     bootstrap_iterations: 800

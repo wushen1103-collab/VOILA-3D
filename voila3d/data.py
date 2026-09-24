@@ -271,6 +271,64 @@ def _assign_balanced_scaffold_splits(
     return pd.Series(labels, index=df.index)
 
 
+def _assign_randomized_scaffold_splits(
+    df: pd.DataFrame,
+    seed: int = 0,
+    frac_train: float = 0.8,
+    frac_val: float = 0.1,
+    task_type: TaskType | None = None,
+) -> pd.Series:
+    """Create a seeded scaffold-disjoint split with size and label balance."""
+    n = len(df)
+    split_names = ("train", "val", "test")
+    target_sizes = {
+        "train": max(1, int(round(frac_train * n))),
+        "val": max(1, int(round(frac_val * n))),
+    }
+    target_sizes["test"] = max(1, n - target_sizes["train"] - target_sizes["val"])
+
+    y = df["y"]
+    if task_type == "classification":
+        strata = y.astype(int).to_numpy()
+    else:
+        n_bins = min(5, int(y.nunique()))
+        strata = pd.qcut(y, q=max(2, n_bins), labels=False, duplicates="drop").astype(int).to_numpy()
+    n_strata = int(strata.max()) + 1
+    total_hist = np.bincount(strata, minlength=n_strata).astype(float)
+    target_hist = {
+        name: total_hist * (target_sizes[name] / n)
+        for name in split_names
+    }
+
+    scaffolds: dict[str, list[int]] = {}
+    for i, smi in enumerate(df["canonical_smiles"]):
+        scaffolds.setdefault(scaffold_for_smiles(smi), []).append(i)
+    groups = list(scaffolds.values())
+    rng = np.random.default_rng(seed)
+    rng.shuffle(groups)
+
+    assigned: dict[str, list[int]] = {name: [] for name in split_names}
+    hist = {name: np.zeros(n_strata, dtype=float) for name in split_names}
+    for group in groups:
+        group_hist = np.bincount(strata[group], minlength=n_strata).astype(float)
+        scored = []
+        for name in split_names:
+            new_size = len(assigned[name]) + len(group)
+            size_fill = new_size / target_sizes[name]
+            label_fill = np.mean((hist[name] + group_hist) / np.maximum(target_hist[name], 1.0))
+            overflow = max(0.0, size_fill - 1.0)
+            score = size_fill + 0.35 * label_fill + 100.0 * overflow + rng.uniform(0.0, 1e-9)
+            scored.append((score, name))
+        _, best_split = min(scored)
+        assigned[best_split].extend(group)
+        hist[best_split] += group_hist
+
+    labels = np.empty(n, dtype=object)
+    for name, idx in assigned.items():
+        labels[idx] = name
+    return pd.Series(labels, index=df.index)
+
+
 def assign_splits(
     df: pd.DataFrame,
     split: str,
@@ -289,6 +347,14 @@ def assign_splits(
         labels[idx[:n_train]] = "train"
         labels[idx[n_train:n_train + n_val]] = "val"
         return pd.Series(labels, index=df.index)
+    if split == "scaffold_randomized":
+        return _assign_randomized_scaffold_splits(
+            df,
+            seed=seed,
+            frac_train=frac_train,
+            frac_val=frac_val,
+            task_type=task_type,
+        )
     if split == "scaffold_balanced" or (split == "scaffold" and task_type == "classification"):
         return _assign_balanced_scaffold_splits(df, seed=seed, frac_train=frac_train, frac_val=frac_val)
     if split != "scaffold":
