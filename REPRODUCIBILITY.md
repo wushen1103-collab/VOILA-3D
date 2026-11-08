@@ -1,5 +1,10 @@
 # Reproducibility Guide
 
+This guide describes the historical molecule-level R9 experiments. The current
+independent-validation TaskMetric-LCB protocol, ten scaffold partitions, paired
+prediction archive, and reproduction commands are documented in
+`TASKMETRIC_REPRODUCIBILITY.md`.
+
 ## Protocol Identity
 
 The six primary benchmarks use a fixed scaffold-balanced assignment with split

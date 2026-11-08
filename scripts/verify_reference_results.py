@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 from pathlib import Path
+import zipfile
 
 import pandas as pd
 
@@ -115,7 +116,21 @@ def verify_reference_files(reference_dir: Path) -> None:
     if set(partition_experts["n_partitions"].astype(int)) != {5}:
         raise RuntimeError("Partition expert summaries do not uniformly use five assignments.")
 
-    print(f"Verified {len(entries)} reference CSV files and five-seed protocol invariants.")
+    current = reference_dir / 'taskmetric_20261108'
+    if current.exists():
+        states = pd.read_csv(current / 'expert_states.csv.gz')
+        assert len(states) == 500
+        assert not states.duplicated(['task', 'split_seed', 'seed']).any()
+        assert states.groupby('task').size().eq(50).all()
+        assert set(states.split_seed) == set(range(1, 11))
+        assert set(states.seed) == set(range(5))
+        paired = pd.read_csv(current / 'paired_test_rows.csv')
+        assert len(paired) == 500 and paired.alpha.eq(.025).all()
+        assert paired.expert_metric_max_abs_difference.max() < 1e-8
+        with zipfile.ZipFile(current / 'paired_predictions.zip') as archive:
+            assert len(archive.namelist()) == 500 and archive.testzip() is None
+        print('Verified current TaskMetric-LCB: 10 endpoints x 10 partitions x 5 seeds.')
+    print(f"Verified {len(entries)} reference artifacts and five-seed protocol invariants.")
 
 
 def verify_raw_data(data_dir: Path) -> None:

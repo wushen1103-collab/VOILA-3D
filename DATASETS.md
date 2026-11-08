@@ -1,8 +1,11 @@
 # Dataset Sources
 
-Raw data are not redistributed. The experiment code downloads the public files
-from the DeepChem data host on first use. The hashes below identify the exact
-inputs used for the reported experiments.
+Complete upstream download files are not redistributed. The current compact
+release includes the evaluated subset's canonical molecular identities and
+targets in `results/reference/taskmetric_20261108/molecule_manifest.csv.gz`, with
+row ordering and partition membership fixed for reproduction. The original
+experiment code downloads full public files from the DeepChem data host. The
+hashes below identify those upstream inputs.
 
 | Dataset | Rows including header | SHA-256 | Source |
 | --- | ---: | --- | --- |

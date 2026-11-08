@@ -1,0 +1,8 @@
+{
+  "states": 500,
+  "tasks": 10,
+  "splits": 10,
+  "seeds": 5,
+  "maximum_refit_metric_discrepancy": 7.105427357601002e-15,
+  "lcb_paired_test_decision_agreement": 0.998
+}

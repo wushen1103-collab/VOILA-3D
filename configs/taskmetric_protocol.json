@@ -1,0 +1,19 @@
+{
+  "method": "TaskMetric-LCB",
+  "main_endpoints": ["BBBP", "ESOL", "FreeSolv", "QM9_GAP", "QM9_MU", "QM9_R2"],
+  "geometric_endpoints": ["QM9_A", "QM9_B", "QM9_C", "QM9_ALPHA"],
+  "data_sources": ["BBBP", "ESOL", "FreeSolv", "QM9"],
+  "split_protocol": "scaffold_randomized",
+  "split_seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "model_seeds": [0, 1, 2, 3, 4],
+  "fractions": {"train": 0.8, "validation": 0.1, "test": 0.1},
+  "conditions": ["same_seed_true3d", "seed_null_2d", "permuted_3d_placebo"],
+  "seed_null_offset": 1000,
+  "permission_bootstrap": {"iterations": 5000, "quantile": 0.025, "seed_offset": 44000, "classification_stratified": true},
+  "statistical_comparator": {"regression": "paired_t", "classification": "paired_DeLong", "one_sided_alpha": 0.025},
+  "relative_validation_thresholds": [0.005, 0.01],
+  "cluster_bootstrap": {"unit": "scaffold_partition_with_all_five_seeds", "iterations": 10000, "seed": 20261108, "endpoints": "held_fixed"},
+  "conformers": {"count": 10, "seed": "zero_based_molecule_row", "timeout_seconds": 45},
+  "decision_scope": "one frozen permission per endpoint, partition and expert seed for every test molecule",
+  "expert": {"implementation": "XGBoost", "estimators": 700, "max_depth": 5, "learning_rate": 0.03, "subsample": 0.9, "column_subsample": 0.8, "lambda": 1.0, "tree_method": "hist"}
+}
